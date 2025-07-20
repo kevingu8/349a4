@@ -1,0 +1,42 @@
+/* eventLabel.css */
+
+/* 1) Container covers the entire cell and sits above the grid lines */
+.event-label {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;   /* align contents to top */
+  justify-content: flex-start;/* align to left */
+  width: 100%;
+  height: 100%;
+  padding: 4px;              /* small inset from the edges */
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #ADD8E6; /* solid fill hides the lines underneath */
+  overflow: hidden;
+}
+
+/* 2) Checkbox at the very top-left inside its padding */
+.event-label > input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* 3) Label text immediately to the right of the checkbox */
+.event-label > label {
+  margin: 0 0 0 6px;         /* small gap from the checkbox */
+  font-size: 0.95rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-self: flex-start;    /* ensure the label sits at the top too */
+}
+
+/* 4) Selected state slightly darker */
+.event-label.selected {
+  background-color: #8fbfcd;
+}

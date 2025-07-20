@@ -1,0 +1,43 @@
+/* day-body.css — for your updated DayBody.ts */
+
+/* 1. The column for a single day */
+.day-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;                /* flexibly fill parent */
+  height: 576px;
+  box-sizing: border-box;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow-y: auto;           /* scroll if content is tall */
+}
+
+/* 2. EventLabel elements inside (they already use .event-label) */
+.day-body .event-label {
+  margin: 0;                  /* reset any default margins */
+}
+
+/* 3. Spacer blocks between events */
+.day-body .separator {
+  width: 100%;
+  background-color: white;  /* light grey gap */
+  flex-shrink: 0;             /* preserve the inline height */
+}
+
+/* 4. Optional faint hourly gridlines behind everything */
+/*    Paints a faint border every 24 px (one hour) */
+.day-body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 23px,
+    #ddd 23px,
+    #ddd 24px
+  );
+  pointer-events: none;       /* let clicks pass through */
+}

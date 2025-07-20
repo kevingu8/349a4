@@ -1,0 +1,21 @@
+/* status.css */
+
+.status {
+  display: flex;
+  align-items: center;
+  width: 100%;               /* fillWidth: 1 */
+  background-color: lightgray; /* fill: "lightgray" */
+  padding: 17px;              /* roughly equivalent to label.margin = 8 */
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  font: 12pt sans-serif;
+  /* margin: 8px 0; */
+}
+
+.status span {
+  margin: 0;
+  line-height: 1.2;
+}

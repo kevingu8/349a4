@@ -1,0 +1,144 @@
+/* modifyView.css */
+
+/* ─── Modal Dialog ────────────────────────────────────────────────────────── */
+.modify-view {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+
+  /* fill 80% of viewport */
+  width: 80vw;
+  height: 80vh;
+  max-width: 900px;
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+}
+
+/* ─── DESCRIPTION ROW (flex layout) ──────────────────────────────────────── */
+.modify-view > #modify-description {
+  display: flex;
+  align-items: center;
+  size: 150px;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+/* label in description row */
+.modify-view > #modify-description .modifyView-texts {
+  width: 140px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.modify-view > .modify-row {
+  display: flex; 
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 0;
+}
+
+
+/* ─── GRID ROWS (Day-of-Week, Start Time, End Time) ───────────────────────── */
+.modify-view > #day-of-week,
+.modify-view > #start-time,
+.modify-view > #end-time {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+/* ─── LABEL STYLING FOR GRID ROWS ──────────────────────────────────────────── */
+.modifyView-texts {
+  /* applies to labels in the grid rows */
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ─── INPUT & SELECT STYLING ──────────────────────────────────────────────── */
+.modify-view input[type="text"],
+.modify-view select,
+.modify-view input[type="number"] {
+  size: 150px;
+  padding: 6px 8px;
+  font-size: 14px;
+  height: 32px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* highlight invalid controls */
+.modify-view input:invalid,
+.modify-view select:invalid {
+  border-color: #e00;
+  background-color: #ffe6e6;
+}
+
+/* remove default spinner margins */
+.modify-view input[type="number"]::-webkit-inner-spin-button,
+.modify-view input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+}
+
+/* ─── BUTTONS ROW ────────────────────────────────────────────────────────── */
+.modify-view > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  margin-top: auto;
+}
+
+/* base button styles */
+.modify-view button {
+  padding: 6px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 80px;
+  box-sizing: border-box;
+}
+
+/* Save = second button in the row */
+.modify-view > div:last-child button:nth-child(2) {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+}
+
+/* Cancel = third button in the row */
+.modify-view > div:last-child button:nth-child(3) {
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+/* Disabled Save state */
+.modify-view > div:last-child button:nth-child(2):disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
