@@ -1,4 +1,3 @@
-
 import { Model } from "./model";
 import { MainView } from "./views/mainView";
 
