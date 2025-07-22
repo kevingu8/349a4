@@ -1,31 +1,10 @@
 import { Observer } from "../../observer";
 import { Model } from "../../model";
 import { DayBody } from "./dayBody";
-import "./grid.css"
 
-export class Grid  implements Observer {
-
-  // dayLabels = new SKContainer(
-  //   {
-  //     id: "day-labels",
-  //     fillWidth: 1,
-  //     fillHeight: 1,
-  //     layoutMethod: new Layout.FillRowLayout({ gap: 4 }),
-  //     border: "1px solid black",
-  //   }
-  // );
-
+export class Grid implements Observer {
   dayLabels = document.createElement("div");
-  
   dayBodies = document.createElement("div");
-
-  // dayBodies = new SKContainer({
-  //   id: "day-bodies",
-  //   fillWidth: 1,
-  //   fillHeight: 1,
-  //   layoutMethod: new Layout.FillRowLayout({ gap: 4 }),
-  //   margin: 4,
-  // });
 
   private container: HTMLDivElement;
   get root(): HTMLDivElement {
@@ -33,19 +12,16 @@ export class Grid  implements Observer {
   }
 
   constructor(private model: Model) {
-
-
     this.container = document.createElement("div");
-    this.container.className = "grid";
-    // this.container.style.height = `${24 * 24}px`;
+    this.container.className = "flex flex-col h-full w-full";
 
-    this.dayLabels.className = "day-labels";
-    this.dayBodies.className = "day-bodies";
-
-    // this.fillWidth = 1;
-    // this.fillHeight = 1;
-    // this.border = "1px solid black";
-
+    // 7 equal columns for labels
+    this.dayLabels.className =
+      "grid grid-cols-7 text-xs text-center border border-gray-300 bg-white";
+    
+    // 7 equal columns for day columns with hour lines
+    this.dayBodies.className =
+      "grid grid-cols-7 border-x border-b border-gray-300 rounded-b bg-white h-[576px]";
 
     this.root.appendChild(this.dayLabels);
     this.root.appendChild(this.dayBodies);
@@ -57,18 +33,11 @@ export class Grid  implements Observer {
     this.dayBodies.replaceChildren();
 
     this.model.day_of_week.forEach((day, index) => {
-      const dayLabel = document.createElement("span");
+      const dayLabel = document.createElement("div");
       dayLabel.innerText = day;
+      dayLabel.className = "py-2 border-r last:border-r-0";
       
-      // new SKLabel({
-      //   text: day,
-      //   fillWidth: 1,
-      // });
-
-      // dayLabel.font = "12pt sans-serif";
-      
-    
-      const number_day = index
+      const number_day = index;
       const dayBody = new DayBody(this.model, number_day);
 
       this.dayLabels.appendChild(dayLabel);

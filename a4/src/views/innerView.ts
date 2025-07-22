@@ -4,56 +4,52 @@ import { Middle } from "./middle";
 import { ModeSwitch } from "./modeSwitch";
 import { Status } from "./status";
 import { agendaView } from "./agenda/agendaview";
-import "./innerView.css"
 
-export class InnerView  implements Observer {
-  update() {
-    this.root.replaceChildren();
-    if (this.model.getMode() === "Overview") {
-      this.root.appendChild(this.modeSwitch.root);
-      this.root.appendChild(this.middle.root);
-      this.root.appendChild(this.status.root)
-    }
-    else {
-      this.root.appendChild(this.modeSwitch.root);
-      this.root.appendChild(this.agendaView.root);
-      this.root.appendChild(this.status.root)
-    }
-    // remove all child observers from model to avoid memory leak
-  }
-
+export class InnerView implements Observer {
   middle: Middle;
   modeSwitch: ModeSwitch;
   status: Status;
-  agendaView: agendaView
+  agendaView: agendaView;
 
   private container: HTMLDivElement;
   get root(): HTMLDivElement {
     return this.container;
-  } 
+  }
 
   constructor(private model: Model) {
-
     this.container = document.createElement("div");
-    this.container.className = "inner";
+
+    // Replaces .inner
+    this.container.className = `
+      flex flex-col gap-3 w-screen h-screen box-border p-2
+    `.replace(/\s+/g, " ").trim();
 
     this.middle = new Middle(model);
     this.modeSwitch = new ModeSwitch(model);
     this.status = new Status(model);
     this.agendaView = new agendaView(model, 0);
 
-    // // setup the view design
-    // this.fillWidth = 1;
-    // this.fillHeight = 1;
-
-    
-
-    // controllers
+    // Switch controller
     this.modeSwitch.agendaButton.addEventListener("click", () => {
-      model.setMode('Agenda');
+      model.setMode("Agenda");
     });
 
-    // register with the model when we're ready
     this.model.addObserver(this);
+  }
+
+  update() {
+    this.root.replaceChildren();
+
+    const mode = this.model.getMode();
+    const main = mode === "Overview" ? this.middle.root : this.agendaView.root;
+
+    // Ensure the middle section flexes
+    main.classList.add("flex-1", "overflow-auto");
+    this.modeSwitch.root.classList.add("flex-none");
+    this.status.root.classList.add("flex-none");
+
+    this.root.appendChild(this.modeSwitch.root);
+    this.root.appendChild(main);
+    this.root.appendChild(this.status.root);
   }
 }

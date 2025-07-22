@@ -1,65 +1,65 @@
-
 import { Observer } from "../observer";
 import { Model } from "../model";
-import { QuantityWidget } from "../widgets/quantity";
-import "./modifyView.css"
 
 export class ModifyView implements Observer {
-  // ─── New fields ───────────────────────────────────────────────────────────────
   private descriptionField = document.createElement("input");
   private dayOfWeekSelect = document.createElement("select");
-  private startTimeInput   = document.createElement("input");
-  private endTimeInput     = document.createElement("input");
+  private startTimeInput = document.createElement("input");
+  private endTimeInput = document.createElement("input");
 
-  private saveButton   = document.createElement("button");
+  private saveButton = document.createElement("button");
   private cancelButton = document.createElement("button");
-  private filler       = document.createElement("div");
+  private filler = document.createElement("div");
 
   private container = document.createElement("div");
-  get root() { return this.container }
+  get root() {
+    return this.container;
+  }
 
   constructor(private model: Model) {
-    // ─── Configure the new controls ─────────────────────────────────────────────
-    // Description
-    this.descriptionField.type     = "text";
-    this.descriptionField.id       = "description-field";
+    this.descriptionField.type = "text";
     this.descriptionField.required = true;
     this.descriptionField.value = this.model.editingEvent.description;
+    this.descriptionField.className =
+      "w-full px-2 py-1 text-sm border border-gray-300 rounded";
 
-    // Day-of-Week dropdown
-    this.dayOfWeekSelect.id       = "day-of-week-select";
     this.dayOfWeekSelect.required = true;
+    this.dayOfWeekSelect.className =
+      "w-full px-2 py-1 text-sm border border-gray-300 rounded";
     this.model.day_of_week.forEach((dayName, idx) => {
       const opt = document.createElement("option");
-      opt.value    = idx.toString();
-      opt.text     = dayName;
+      opt.value = idx.toString();
+      opt.text = dayName;
       if (idx === this.model.editingEvent.day) opt.selected = true;
       this.dayOfWeekSelect.appendChild(opt);
     });
 
-    // Start Time (hour 0–23)
-    this.startTimeInput.type     = "number";
-    this.startTimeInput.id       = "start-time-input";
-    this.startTimeInput.min      = "0";
-    this.startTimeInput.max      = "23";
-    this.startTimeInput.value    = String(this.model.editingEvent.start);
+    this.startTimeInput.type = "number";
+    this.startTimeInput.min = "0";
+    this.startTimeInput.max = "23";
+    this.startTimeInput.value = String(this.model.editingEvent.start);
     this.startTimeInput.required = true;
+    this.startTimeInput.className =
+      "w-full px-2 py-1 text-sm border border-gray-300 rounded";
 
-    // End Time (hour 0–23)
-    this.endTimeInput.type     = "number";
-    this.endTimeInput.id       = "end-time-input";
-    this.endTimeInput.min      = "0";
-    this.endTimeInput.max      = "23";
-    this.endTimeInput.value    = String(this.model.editingEvent.end);
+    this.endTimeInput.type = "number";
+    this.endTimeInput.min = "0";
+    this.endTimeInput.max = "23";
+    this.endTimeInput.value = String(this.model.editingEvent.end);
     this.endTimeInput.required = true;
+    this.endTimeInput.className =
+      "w-full px-2 py-1 text-sm border border-gray-300 rounded";
 
-    // Buttons
-    this.saveButton.innerText   = "Save";
-    this.saveButton.type        = "submit";
+    this.saveButton.innerText = "Save";
+    this.saveButton.type = "submit";
+    this.saveButton.className =
+      "min-w-[80px] px-4 py-1 text-sm rounded bg-blue-600 text-white disabled:bg-gray-300 disabled:text-gray-400";
+
     this.cancelButton.innerText = "Cancel";
-    this.cancelButton.type      = "button";
+    this.cancelButton.type = "button";
+    this.cancelButton.className =
+      "min-w-[80px] px-4 py-1 text-sm rounded border border-gray-300";
 
-    // Hook them up
     this.saveButton.addEventListener("click", () => {
       if (!this.validate()) return;
       this.model.modifyEvent(
@@ -70,6 +70,7 @@ export class ModifyView implements Observer {
         +this.endTimeInput.value
       );
     });
+
     this.cancelButton.addEventListener("click", () => {
       this.model.cancelModifyEvent();
     });
@@ -78,60 +79,38 @@ export class ModifyView implements Observer {
   }
 
   update() {
-    // clear & re-build
     this.container.replaceChildren();
-    this.container.className = "modify-view";
+    this.container.className =
+      "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] flex flex-col gap-4 p-6 w-[80vw] h-[80vh] max-w-[900px] bg-white rounded-lg shadow-lg overflow-y-auto font-sans";
 
-    // DESCRIPTION ROW
-    const descRow = document.createElement("div");
-    descRow.className = "modify-row";
-    const descLabel = document.createElement("label");
-    descLabel.htmlFor = this.descriptionField.id;
-    descLabel.innerText = "Description:";
-    descRow.append(descLabel, this.descriptionField);
-    this.container.appendChild(descRow);
+    this.container.appendChild(this.makeRow("Description:", this.descriptionField));
+    this.container.appendChild(this.makeRow("Day of Week:", this.dayOfWeekSelect));
+    this.container.appendChild(this.makeRow("Start Time:", this.startTimeInput));
+    this.container.appendChild(this.makeRow("End Time:", this.endTimeInput));
 
-    // DAY-OF-WEEK ROW
-    const dowRow = document.createElement("div");
-    dowRow.className = "modify-row";
-    const dowLabel = document.createElement("label");
-    dowLabel.htmlFor = this.dayOfWeekSelect.id;
-    dowLabel.innerText = "Day of Week:";
-    dowRow.append(dowLabel, this.dayOfWeekSelect);
-    this.container.appendChild(dowRow);
-
-    // START TIME ROW
-    const startRow = document.createElement("div");
-    startRow.className = "modify-row";
-    const startLabel = document.createElement("label");
-    startLabel.htmlFor = this.startTimeInput.id;
-    startLabel.innerText = "Start Time:";
-    startRow.append(startLabel, this.startTimeInput);
-    this.container.appendChild(startRow);
-
-    // END TIME ROW
-    const endRow = document.createElement("div");
-    endRow.className = "modify-row";
-    const endLabel = document.createElement("label");
-    endLabel.htmlFor = this.endTimeInput.id;
-    endLabel.innerText = "End Time:";
-    endRow.append(endLabel, this.endTimeInput);
-    this.container.appendChild(endRow);
-
-    // BUTTONS ROW
     const btnRow = document.createElement("div");
-    btnRow.className = "modify-row modify-buttons";
+    btnRow.className = "flex justify-end gap-3 mt-auto pt-4";
     btnRow.append(this.saveButton, this.cancelButton);
     this.container.appendChild(btnRow);
   }
 
-  /** quick form-level validation */
+  private makeRow(labelText: string, control: HTMLElement): HTMLDivElement {
+    const row = document.createElement("div");
+    row.className = "flex items-center gap-3 py-1";
+    const label = document.createElement("label");
+    label.innerText = labelText;
+    label.className = "w-[140px] text-right text-sm font-medium text-gray-700";
+    row.append(label, control);
+    return row;
+  }
+
   private validate(): boolean {
-    // let the browser show its validation UI
-    return (this.descriptionField.checkValidity() &&
-            this.dayOfWeekSelect.checkValidity() &&
-            this.startTimeInput.checkValidity() &&
-            this.endTimeInput.checkValidity() &&
-            +this.endTimeInput.value > +this.startTimeInput.value);
+    return (
+      this.descriptionField.checkValidity() &&
+      this.dayOfWeekSelect.checkValidity() &&
+      this.startTimeInput.checkValidity() &&
+      this.endTimeInput.checkValidity() &&
+      +this.endTimeInput.value > +this.startTimeInput.value
+    );
   }
 }
