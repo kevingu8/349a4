@@ -5,8 +5,8 @@
   flex-direction: row;
   align-items: center;
   gap: 12px;                    /* space between buttons */
-  padding: 15px 16px;            /* inner padding */
-  background-color: #fafafa;    /* light neutral background */
+  padding: 15px 16px;          /* inner padding */
+  background-color: #fafafa;   /* light neutral background */
   border: 1px solid #000;
   box-sizing: border-box;
 }
@@ -33,8 +33,8 @@
   cursor: not-allowed;
 }
 
-/* If you want to highlight a “selected” button, you can add an .active class in TS:
-   this.allButton.classList.toggle("active", /* some condition */;
+/* If you want to highlight a “selected” button, you can add an .active class in TS.
+   Example: this.allButton.classList.toggle("active", true);
 */
 .toolbar button.active {
   background-color: #4285f4;
