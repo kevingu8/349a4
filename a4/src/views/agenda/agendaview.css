@@ -1,0 +1,61 @@
+/* agenda-view.css */
+
+.agenda-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  padding: 16px;
+}
+
+/* The description area (fills available space) */
+.agenda-view .agenda-desc {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font: 20pt sans-serif;
+}
+
+/* Button row at the bottom */
+.agenda-view .buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Spacer filler to push buttons to center */
+.agenda-view .filler {
+  flex: 1
+}
+
+/* Base styles for Prev/Next buttons */
+.agenda-view button {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: 1px solid #888;
+  border-radius: 4px;
+  background-color: #fff;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hover state (only when enabled) */
+.agenda-view button:hover:not(:disabled) {
+  background-color: lightblue;
+  border-color: #666;
+}
+
+/* Disabled state */
+.agenda-view button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
