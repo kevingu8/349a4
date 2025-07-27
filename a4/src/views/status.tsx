@@ -1,7 +1,6 @@
 import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { Model } from "../model";
-import "./status.css";
 
 type Props = {
   model: Model;
@@ -36,8 +35,8 @@ export function Status({ model }: Props) {
   }, [model]);
 
   return (
-    <div class="status">
-      <span>{text}</span>
+    <div class="flex items-center w-full bg-[#d3d3d3] p-[17px] box-border rounded text-[12pt] font-sans text-[#333]">
+      <span class="m-0 leading-[1.2]">{text}</span>
     </div>
   );
 }
