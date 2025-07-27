@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { Model } from "../model";
-import "./modifyView.css";
+
 
 type ModifyViewProps = {
   model: Model;
@@ -52,6 +52,7 @@ export function ModifyView({ model }: ModifyViewProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        border: "1px solid black",
       }}
     >
       <div className="modify-view">

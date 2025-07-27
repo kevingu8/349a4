@@ -2,7 +2,6 @@ import { h } from "preact";
 import { Model } from "../model";
 import { ToolBar } from "./overview/toolBar";
 import { Grid } from "./overview/grid";
-import "./middle.css";
 
 type Props = {
   model: Model;
@@ -10,7 +9,7 @@ type Props = {
 
 export function Middle({ model }: Props) {
   return (
-    <div class="middle">
+    <div class="flex flex-col w-full h-full box-border bg-white overflow-hidden">
       <ToolBar model={model} />
       <Grid model={model} />
     </div>
