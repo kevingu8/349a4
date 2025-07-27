@@ -43,72 +43,84 @@ export function ModifyView({ model }: ModifyViewProps) {
   }, [model]);
 
   return (
-    <div className="modify-view">
-      {/* DESCRIPTION */}
-      <div className="modify-row">
-        <label htmlFor="description-field">Description:</label>
-        <input
-          id="description-field"
-          type="text"
-          required
-          value={description}
-          onInput={(e) => setDescription((e.target as HTMLInputElement).value)}
-        />
-      </div>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        zIndex: 1000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div className="modify-view">
+        {/* DESCRIPTION */}
+        <div className="modify-row">
+          <label htmlFor="description-field" className="modifyView-texts">Description:</label>
+          <input
+            id="description-field"
+            type="text"
+            required
+            value={description}
+            onInput={(e) => setDescription((e.target as HTMLInputElement).value)}
+          />
+        </div>
 
-      {/* DAY OF WEEK */}
-      <div className="modify-row">
-        <label htmlFor="day-of-week-select">Day of Week:</label>
-        <select
-          id="day-of-week-select"
-          required
-          value={day}
-          onChange={(e) => setDay(+((e.target as HTMLSelectElement).value))}
-        >
-          {model.day_of_week.map((dayName, idx) => (
-            <option value={idx} key={idx}>
-              {dayName}
-            </option>
-          ))}
-        </select>
-      </div>
+        {/* DAY OF WEEK */}
+        <div className="modify-row">
+          <label htmlFor="day-of-week-select" className="modifyView-texts">Day of Week:</label>
+          <select
+            id="day-of-week-select"
+            required
+            value={day}
+            onChange={(e) => setDay(+((e.target as HTMLSelectElement).value))}
+          >
+            {model.day_of_week.map((dayName, idx) => (
+              <option value={idx} key={idx}>
+                {dayName}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* START TIME */}
-      <div className="modify-row">
-        <label htmlFor="start-time-input">Start Time:</label>
-        <input
-          id="start-time-input"
-          type="number"
-          min="0"
-          max="23"
-          required
-          value={start}
-          onInput={(e) => setStart(+((e.target as HTMLInputElement).value))}
-        />
-      </div>
+        {/* START TIME */}
+        <div className="modify-row">
+          <label htmlFor="start-time-input" className="modifyView-texts">Start Time:</label>
+          <input
+            id="start-time-input"
+            type="number"
+            min="0"
+            max="23"
+            required
+            value={start}
+            onInput={(e) => setStart(+((e.target as HTMLInputElement).value))}
+          />
+        </div>
 
-      {/* END TIME */}
-      <div className="modify-row">
-        <label htmlFor="end-time-input">End Time:</label>
-        <input
-          id="end-time-input"
-          type="number"
-          min="0"
-          max="23"
-          required
-          value={end}
-          onInput={(e) => setEnd(+((e.target as HTMLInputElement).value))}
-        />
-      </div>
+        {/* END TIME */}
+        <div className="modify-row">
+          <label htmlFor="end-time-input" className="modifyView-texts">End Time:</label>
+          <input
+            id="end-time-input"
+            type="number"
+            min="0"
+            max="23"
+            required
+            value={end}
+            onInput={(e) => setEnd(+((e.target as HTMLInputElement).value))}
+          />
+        </div>
 
-      {/* BUTTONS */}
-      <div className="modify-row modify-buttons">
-        <button type="submit" onClick={handleSave}>
-          Save
-        </button>
-        <button type="button" onClick={handleCancel}>
-          Cancel
-        </button>
+        {/* BUTTONS */}
+        <div className="modify-row">
+          <button type="submit" onClick={handleSave}>
+            Save
+          </button>
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );
