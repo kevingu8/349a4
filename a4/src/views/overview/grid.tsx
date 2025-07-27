@@ -1,37 +1,38 @@
 import { h } from "preact";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { useSignal } from "@preact/signals";
 import { Model } from "../../model";
 import { DayBody } from "./dayBody";
-import "./grid.css";
 
 type GridProps = {
   model: Model;
 };
 
 export function Grid({ model }: GridProps) {
-  const tick = useSignal(0); // triggers re-render on model update
+  const tick = useSignal(0);
 
   useEffect(() => {
     const observer = {
-      update: () => {
-        tick.value++;
-      },
+      update: () => tick.value++,
     };
     model.addObserver(observer);
     return () => model.removeObserver(observer);
   }, [model]);
 
   return (
-    <div className="grid">
-      <div className="day-labels">
+    <div class="flex flex-col w-full box-border border-x border-b border-black">
+      <div class="flex font-semibold border-b border-black">
         {model.day_of_week.map((day, index) => (
-          <span key={index}>{day}</span>
+          <div key={index} class="w-1/7 text-center px-2 py-2">
+            {day}
+          </div>
         ))}
       </div>
-      <div className="day-bodies">
+      <div class="flex w-full">
         {model.day_of_week.map((_, index) => (
-          <DayBody key={index} model={model} day={index} />
+          <div key={index} class="w-1/7">
+            <DayBody model={model} day={index} />
+          </div>
         ))}
       </div>
     </div>
