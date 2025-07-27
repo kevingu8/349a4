@@ -1,8 +1,7 @@
-/** AgendaView.tsx */
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect } from "preact/hooks";
+import { signal } from "@preact/signals";
 import { Model } from "../../model";
 import { Observer } from "../../observer";
-import "./agendaview.css";
 
 interface AgendaViewProps {
   model: Model;
@@ -10,49 +9,19 @@ interface AgendaViewProps {
 }
 
 export function AgendaView({ model }: AgendaViewProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const descRef = useRef<HTMLDivElement>(null);
-  const prevButtonRef = useRef<HTMLButtonElement>(null);
-  const nextButtonRef = useRef<HTMLButtonElement>(null);
+  const description = signal("");
+  const timeLabel = signal("");
+  const canGoPrev = signal(false);
+  const canGoNext = signal(false);
 
   useEffect(() => {
     const observer: Observer = {
       update: () => {
-        const container = containerRef.current;
-        const desc = descRef.current;
-        if (!container || !desc) return;
-
-        // Clear old content
-        container.replaceChildren();
-        desc.replaceChildren();
-
-        // Create new content
-        const description = document.createElement("span");
-        description.innerText = `${model.curEvent.description}`;
-        description.className = "description";
-        desc.appendChild(description);
-
-        const daytime_label = document.createElement("span");
-        daytime_label.innerText = `${model.day_of_week[model.curEvent.day]} ${model.curEvent.start}:00 - ${model.curEvent.end}:00`;
-        daytime_label.className = "daytime-label";
-        desc.appendChild(daytime_label);
-
-        const prevButton = prevButtonRef.current!;
-        const nextButton = nextButtonRef.current!;
-        const filler1 = document.createElement("div");
-        const filler2 = document.createElement("div");
-        filler1.className = "filler";
-        filler2.className = "filler";
-
-        const buttonsContainer = document.createElement("div");
-        buttonsContainer.className = "buttons-container";
-        buttonsContainer.append(filler1, prevButton, nextButton, filler2);
-
-        prevButton.disabled = !(model.curEventIdx > 1);
-        nextButton.disabled = model.curEventIdx >= model.numberSelectedEvents;
-
-        container.appendChild(desc);
-        container.appendChild(buttonsContainer);
+        const cur = model.curEvent;
+        description.value = cur.description;
+        timeLabel.value = `${model.day_of_week[cur.day]} ${cur.start}:00 - ${cur.end}:00`;
+        canGoPrev.value = model.curEventIdx > 1;
+        canGoNext.value = model.curEventIdx < model.numberSelectedEvents;
       },
     };
 
@@ -63,14 +32,30 @@ export function AgendaView({ model }: AgendaViewProps) {
   }, [model]);
 
   return (
-    <div ref={containerRef} className="agenda-view">
-      <div ref={descRef} className="agenda-desc" />
-      <button ref={prevButtonRef} onClick={() => model.prevTask()}>
-        Previous
-      </button>
-      <button ref={nextButtonRef} onClick={() => model.nextTask()}>
-        Next
-      </button>
+    <div className="flex flex-col w-full h-full box-border border border-black p-4">
+      <div className="flex flex-col justify-center items-center gap-2 text-[20pt] font-sans flex-1">
+        <span>{description.value}</span>
+        <span>{timeLabel.value}</span>
+      </div>
+
+      <div className="flex items-center gap-2 mt-4 w-full">
+        <div className="flex-1" />
+        <button
+          disabled={!canGoPrev.value}
+          onClick={() => model.prevTask()}
+          className="flex-none px-4 py-2 text-sm border border-gray-500 rounded bg-white cursor-pointer transition-colors duration-200 hover:enabled:bg-blue-200 hover:enabled:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <button
+          disabled={!canGoNext.value}
+          onClick={() => model.nextTask()}
+          className="flex-none px-4 py-2 text-sm border border-gray-500 rounded bg-white cursor-pointer transition-colors duration-200 hover:enabled:bg-blue-200 hover:enabled:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+        <div className="flex-1" />
+      </div>
     </div>
   );
 }
